@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>🦖 Vélocipèderus Rex 🦖</title>
+
+    <style>
+        body {
+            margin: 2rem auto;
+            max-width: 40rem;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            color: #444;
+            padding: 0 1rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .v-rex {
+            text-align: center;
+            line-height: 0;
+            font-size: 4em;
+        }
+
+        .v-rex>* {
+            position: relative;
+        }
+
+        .v-rex p:first-child {
+            z-index: 1;
+        }
+
+        .v-rex p:last-child {
+            margin-top: -0.8em;
+        }
+
+        fieldset {
+            margin-bottom: 1em;
+        }
+
+        .input-group {
+            margin-bottom: 0.5em;
+            display: flex;
+        }
+
+        .input-group>* {
+            flex: 1;
+        }
+
+        .input-group label {
+            text-align: right;
+            margin-right: 1em;
+        }
+
+        input {
+            font-size: 1rem;
+            padding: 0.5em;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="v-rex">
+        <p>🦖</p>
+        <p>🚲</p>
+    </div>
+
+    <main id="app">
+        <form>
+            <fieldset>
+                <legend>Resources</legend>
+                <div class="input-group">
+                    <label for="working_days">Working days</label>
+                    <input type="number" name="working_days" id="working_days" v-model="working_days">
+                </div>
+
+                <div class="input-group">
+                    <label for="dev_count">Developer count</label>
+                    <input type="number" name="developer_count" id="developer_count" v-model="developer_count">
+                </div>
+
+                <div class="input-group">
+                    <label for="absenses">Working day absenses</label>
+                    <input type="number" name="absenses" id="absenses" v-model="absenses">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Accomplishments</legend>
+                <div class="input-group">
+                    <label for="story_points_completed">Story points completed</label>
+                    <input type="number" name="story_points" id="story_points" v-model="story_points">
+                </div>
+
+                <div class="input-group">
+                    <label for="spike_dev_days">Dev days spent (on spikes)</label>
+                    <input type="number" name="spike_dev_days" id="spike_dev_days" v-model="spike_dev_days">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Velocity</legend>
+
+                <div class="input-group">
+                    <label for="dev_days">Dev days</label>
+                    <input type="number" name="dev_days" id="dev_days" v-model="dev_days" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label for="points_per_dev_day">Points per dev day</label>
+                    <input type="number" name="points_per_dev_day" id="points_per_dev_day" v-model="points_per_dev_day" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label for="story_points">Story points</label>
+                    <input type="number" name="story_points" id="story_points" v-model="story_points" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label for="spike_points">Spike points</label>
+                    <input type="number" name="spike_points" id="spike_points" v-model="spike_points" disabled>
+                </div>
+
+                <div class="input-group">
+                    <label for="velocity">Velocity</label>
+                    <input type="number" name="velocity" id="velocity" v-model="velocity" disabled>
+                </div>
+
+            </fieldset>
+        </form>
+    </main>
+
+
+    <!-- production version, optimized for size and speed -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                working_days: 7,
+                developer_count: 6,
+                absenses: 0,
+                story_points: 0,
+                spike_dev_days: 0,
+            },
+            computed: {
+                dev_days() {
+                    return (this.working_days * this.developer_count) - this.absenses - this.spike_dev_days;
+                },
+                points_per_dev_day() {
+                    return this.story_points / this.dev_days;
+                },
+                spike_points() {
+                    return this.points_per_dev_day * this.spike_dev_days;
+                },
+                velocity() {
+                    return parseInt(this.story_points, 10) + parseInt(this.spike_points, 10);
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
